@@ -1,0 +1,22 @@
+{
+  "name": "asxcrypto",
+  "version": "1.0.0",
+  "description": "\"# ASXCrypto\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LawDominic/ASXCrypto.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LawDominic/ASXCrypto/issues"
+  },
+  "homepage": "https://github.com/LawDominic/ASXCrypto#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
