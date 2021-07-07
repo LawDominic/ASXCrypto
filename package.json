@@ -2,12 +2,13 @@
   "name": "asxcrypto",
   "version": "1.0.0",
   "description": "\"# ASXCrypto\"",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cross-env NODE_ENV=production node app",
+    "dev": "cross-env NODE_ENV=development nodemon app"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LawDominic/ASXCrypto.git"
@@ -29,6 +30,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.9"
   }
 }
