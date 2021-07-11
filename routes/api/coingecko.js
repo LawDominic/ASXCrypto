@@ -2,6 +2,7 @@ const axios = require('axios');
 const api = process.env.COINGECKO_API;
 const Coin = require('../../models/Coin.js')
 
+let arrData = []
 // @desc Get status of Coingecko API
 function getStatus() {
     axios.get(`${api}ping`)
