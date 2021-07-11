@@ -6,7 +6,7 @@ const StockSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    displayname: {
+    displayName: {
         type: String,
         required: true
     },
@@ -38,15 +38,11 @@ const StockSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    yearHighprice: {
+    yearHighPrice: {
         type: Number,
         required: true
     },
     yearLowPrice: {
-        type: Number,
-        required: true
-    },
-    yearOpenPrice: {
         type: Number,
         required: true
     },
@@ -59,10 +55,6 @@ const StockSchema = new mongoose.Schema({
         required: true
     },
     divYield: {
-        type: Number,
-        required: true
-    },
-    yearOpenPrice: {
         type: Number,
         required: true
     },
