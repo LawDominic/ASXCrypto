@@ -46,6 +46,6 @@ const CoinSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-})
-
-module.exports = mongoose.model('Coin', CoinSchema)
+}, {timestamps: true})
+const Coin = mongoose.model('Coin', CoinSchema)
+module.exports = Coin;
