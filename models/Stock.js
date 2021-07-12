@@ -35,7 +35,7 @@ const StockSchema = new mongoose.Schema({
         required: true
     },
     previousDayPerDelta: {
-        type: Number,
+        type: String,
         required: true
     },
     yearHighPrice: {
@@ -66,6 +66,7 @@ const StockSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-})
+}, {timestamps: true})
 
-module.exports = mongoose.model('Stock', StockSchema)
+const Stock = mongoose.model('Stock', StockSchema)
+module.exports = Stock;
