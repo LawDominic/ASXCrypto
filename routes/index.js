@@ -1,9 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const axios = require('axios');
-
-const ASX_API = process.env.ASX_API;
-let arrData = []
 const asx = require("./api/asx")
 
 // @desc Landing page
@@ -24,18 +20,11 @@ router.get('/stock', (req, res) => {
     res.render('./stock')
 })
 
+// @desc ASX API calls
+// @route POST /api/asx
 router.post("/api/asx", (req,res) => {
-    console.log(req)
-    const body = {
-        ticker: req.body
-    }
-    console.log(body)
-    res.send('POST request to the homepage')
-    // axios.get(ASX_API + req.body.ticker)
-    //     .then (function (response) {
-    //         arrData = response.data;
-    //         asx.updateStock(arrData)
-    //     });
+    asx.updateStock(req.body.ticker)
+    res.status(200).send(req.body.ticker)
 })
 
 module.exports = router
