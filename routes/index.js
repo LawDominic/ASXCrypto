@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const asx = require("./api/asx")
+const Stock = require('../models/Stock')
 
 // @desc Landing page
 // @route GET /
@@ -15,9 +16,19 @@ router.get('/coin', (req, res) => {
 })
 
 // @desc Stock template page
-// @route GET /stock
-router.get('/stock', (req, res) => {
-    res.render('./stock')
+// @route GET /stock and display all entries
+router.get('/stock', async (req, res) => {
+    try {
+        console.log("Fetching allStock")
+        const allStock = await Stock.find({}).lean()
+        res.render('stock', {
+            page: "Stock",
+            allStock
+        })
+    } catch (error) {
+        console.log(error);
+        res.render('error/500')
+    }
 })
 
 // @desc ASX API calls
