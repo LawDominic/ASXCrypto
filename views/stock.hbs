@@ -1,13 +1,30 @@
 {{!-- Stock page template --}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASXCrypto / Stock</title>
-</head>
-<body>
-    
-</body>
-</html>
+<title>ASXCrypto / {{page}}</title>
+{{#if allStock}}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ticker</th>
+                <th>Company Name</th>
+                <th>Open Price</th>
+                <th>Last Price</th>
+                <th>Daily Change</th>
+                <th>Daily Change %</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each allStock}}
+                <tr>
+                    <td>{{ticker}}</td>
+                    <td>{{displayName}}</td>
+                    <td>{{openPrice}}</td>
+                    <td>{{lastPrice}}</td>
+                    <td>{{dailyChange}}</td>
+                    <td>{{previousDayPerDelta}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <p> No data</p>>
+{{/if}}
