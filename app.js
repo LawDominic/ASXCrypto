@@ -6,6 +6,7 @@ const exphbs = require('express-handlebars')
 const morgan = require('morgan')
 const bodyParser = require("body-parser");
 dotenv.config({path: './config/config.env'})
+
 const app = express();
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
@@ -39,17 +40,19 @@ coingecko.getCoin("the-graph");
 
 // @desc Stock API testing
 const Stock = require("./models/Stock")
-app.get("/asx", async (request, response) => {
+app.get("/asx", async (req, res) => {
     let body = asx.getBody();
-    console.log(body)
     const stock = new Stock(body);
-    console.log("Starting POST")
     try {
       await stock.save();
-      response.send(stock);
+      res.send(stock);
     } catch (error) {
-      response.status(500).send(error);
+      res.status(500).send(error);
     }
-  });
+});
+
+app.get('*', (req, res) => {
+  res.render('./error/404')
+})
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
