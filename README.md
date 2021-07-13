@@ -19,9 +19,7 @@
 
 ## Upcoming Features
 
-- [ ] User authentication with Firebase
-- [ ] Data storage with Firestore
-- [ ] More coming soon!
+--- WIP ---
 
 ## Credits
 
