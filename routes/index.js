@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const asx = require("./api/asx")
+const coingecko = require("./api/coingecko")
 const Stock = require('../models/Stock')
-
+const Coin = require('../models/Coin')
 // @desc Landing page
 // @route GET /
 router.get('/', (req, res) => {
@@ -12,7 +13,17 @@ router.get('/', (req, res) => {
 // @desc Coin template page
 // @route GET /coin
 router.get('/coin', (req, res) => {
-    res.render('./coin')
+    try {
+        console.log("Fetching allCoins")
+        const allCoin = await Coin.find({}).lean()
+        res.render('coin', {
+            page: "Coin",
+            allCoin
+        })
+    } catch (error) {
+        console.log(error);
+        res.render('error/500')
+    }
 })
 
 // @desc Stock template page
@@ -35,6 +46,13 @@ router.get('/stock', async (req, res) => {
 // @route POST /api/asx
 router.post("/api/asx", (req,res) => {
     asx.updateStock(req.body.ticker)
+    res.status(200).send(req.body.ticker)
+})
+
+// @desc Coingecko API calls
+// @route POST /api/coingecko
+router.post("/api/coingecko", (req,res) => {
+    coingecko.updateCoin(req.body.ticker)
     res.status(200).send(req.body.ticker)
 })
 
