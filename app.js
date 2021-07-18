@@ -33,10 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 // @desc Routes
 app.use('/', require('./routes/index'))
 
+// @desc PORT assigning
 const PORT = process.env.PORT || 5000;
-
-// @desc API testing
-coingecko.getCoin("the-graph");
 
 // @desc Stock API testing
 const Stock = require("./models/Stock")
