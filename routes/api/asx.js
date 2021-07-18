@@ -8,6 +8,7 @@ const api = process.env.ASX_API;
 const headerAPI = process.env.ASX_HEADER;
 let arrData = []
 let body = []
+let allStock = null
 
 // @desc Get stock from MongoDB
 function getStock() {
@@ -18,11 +19,11 @@ function getStock() {
 async function updateStock(ticker) {
     await axios
         .get(api + ticker)
-            .then (response => {
-                arrData = response.data;
+            .then (res => {
+                arrData = res.data;
                 return axios.get(headerAPI + arrData.code + "/header")
             })
-            .then (response => {
+            .then (res => {
                 body = {
                     ticker: arrData.code,
                     displayName: response.data.data.displayName,
@@ -41,17 +42,30 @@ async function updateStock(ticker) {
                     marketCap: arrData.market_cap,
                     shareNumber: arrData.number_of_shares
                 }
-                console.log(body)
             })
-            .catch(error => console.log(error.response))
+            .catch (error => {
+                console.log(error.response);
+                res.render('error/500');
+            })
 }
+
+// @desc Display all Stock entries from MongoDB
+// async function displayAllStock() {
+//     allStock = await Stock.find({}).lean()
+//     return allStock;
+// }
 
 function getBody() {
     return body;
 }
 
+function getAllStock() {
+    return allStock;
+}
+
 module.exports = {
     getStock,
     updateStock,
+    getAllStock,
     getBody
 }
