@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 
 // @desc Coin template page
 // @route GET /coin
-router.get('/coin', (req, res) => {
+router.get('/coin', async (req, res) => {
     try {
         console.log("Fetching allCoins")
         const allCoin = await Coin.find({}).lean()
@@ -54,6 +54,16 @@ router.post("/api/asx", (req,res) => {
 router.post("/api/coingecko", (req,res) => {
     coingecko.updateCoin(req.body.ticker)
     res.status(200).send(req.body.ticker)
+})
+
+router.get("/api/asx/crawlTickers", async (req, res) => {
+    try {
+        await asx.crawlTickers()
+        res.status(200).send("Works")
+    } catch (error) {
+        console.log(error);
+        res.render('error/500')
+    }
 })
 
 module.exports = router
