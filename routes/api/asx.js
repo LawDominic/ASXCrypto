@@ -1,4 +1,5 @@
 const axios = require('axios');
+const cheerio = require('cheerio')
 const Stock = require('../../models/Stock')
 const express = require("express");
 const router = express.Router();
@@ -10,9 +11,22 @@ let arrData = []
 let body = []
 let allStock = null
 
-// @desc Get stock from MongoDB
-function getStock() {
-    
+// @desc Crawl for top 20 tickers from https://www.asx20list.com/
+async function crawlTickers() {
+    try {
+        const { data } = await axios.get('https://www.asx20list.com/')
+        const $ = cheerio.load(data)
+        const scrapedTickers = []
+
+        for (let i = 1; i < 21; i++) {
+            let scrapedTicker = $(`#post-2 > div > table > tbody > tr:nth-child(${i}) > td:nth-child(1)`).text()
+            scrapedTickers.push(scrapedTicker)
+        }
+        console.log(scrapedTickers)
+        return scrapedTickers
+    } catch (error) {
+        return error
+    }
 }
 
 // @desc Update MongoDB with updated data
@@ -64,7 +78,7 @@ function getAllStock() {
 }
 
 module.exports = {
-    getStock,
+    crawlTickers,
     updateStock,
     getAllStock,
     getBody
