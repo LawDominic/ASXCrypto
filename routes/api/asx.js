@@ -1,6 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio')
 const Stock = require('../../models/Stock')
+const ASXTickers = require('../../models/ASXTickers')
 const express = require("express");
 const router = express.Router();
 const app = express();
@@ -13,19 +14,50 @@ let allStock = null
 
 // @desc Crawl for top 20 tickers from https://www.asx20list.com/
 async function crawlTickers() {
-    try {
-        const { data } = await axios.get('https://www.asx20list.com/')
-        const $ = cheerio.load(data)
-        const scrapedTickers = []
+    let scrapedTickers = [];
+    const { data } = await axios.get('https://www.asx20list.com/')
+    const $ = cheerio.load(data)
 
-        for (let i = 1; i < 21; i++) {
-            let scrapedTicker = $(`#post-2 > div > table > tbody > tr:nth-child(${i}) > td:nth-child(1)`).text()
-            scrapedTickers.push(scrapedTicker)
+    for (let i = 1; i < 21; i++) {
+
+        let scrapedTicker = $(`#post-2 > div > table > tbody > tr:nth-child(${i}) > td:nth-child(1)`).text()
+        scrapedTickers.push(scrapedTicker)
+
+    }
+
+    const results = await Promise.all(scrapedTickers)
+    saveTickers(results)
+
+    for (let item of results) {
+        let tickerExists = await Promise.resolve(findTicker(item))
+        if (tickerExists.length === 0) {
+            console.log("Doesn't exist " + item)
+            saveTickers(item)
+        } else {
+            continue
         }
-        console.log(scrapedTickers)
-        return scrapedTickers
+    }
+}
+
+async function saveTickers(ticker) {
+
+    let body = { ticker }
+    const asxTickers = new ASXTickers(body);
+    try {
+        await asxTickers.save();
     } catch (error) {
-        return error
+        console.log(error)
+    }
+
+}
+
+
+async function findTicker(ticker) {
+    try {
+        let checkTicker = await ASXTickers.find({ticker});
+        return checkTicker
+    } catch (error) {
+        console.log(error)
     }
 }
 
@@ -79,6 +111,7 @@ function getAllStock() {
 
 module.exports = {
     crawlTickers,
+    findTicker,
     updateStock,
     getAllStock,
     getBody
